@@ -177,14 +177,14 @@ body {
   max-width: 65%;
 }
 
-/* Project Title (Long Text Support) */
+/* Project Title */
 #res-title {
   line-height: 1.4;
   word-break: break-word;
   white-space: normal;
 }
 
-/* NEW: Assigned / Person in Charge */
+/* Assigned */
 #res-assigned {
   line-height: 1.4;
   word-break: break-word;
@@ -210,34 +210,35 @@ body {
   background: currentColor;
 }
 
-.status-submitted {
-  background: #f1f5f9;
-  color: #475569;
+/* NEW STATUS SYSTEM */
+.status-open {
+  background: #e5e7eb;
+  color: #374151;
 }
 
-.status-under-review {
-  background: var(--brand-blue-light);
-  color: var(--brand-blue);
+.status-ongoing {
+  background: #fef3c7;
+  color: #92400e;
 }
 
-.status-processing {
-  background: #fff3e6;
-  color: #c2580c;
+.status-reviewing {
+  background: #dbeafe;
+  color: #1d4ed8;
 }
 
-.status-approved {
-  background: var(--brand-green-light);
-  color: var(--brand-green);
-}
-
-.status-rejected {
-  background: #fdecec;
-  color: #c53030;
+.status-hold {
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 .status-completed {
-  background: #d8e7cd;
-  color: #1f3d12;
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-rejected {
+  background: #b91c1c;
+  color: #ffffff;
 }
 
 /* Utility */
