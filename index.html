@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application Status Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="app-header">
+      <div class="logo-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+      </div>
+      <h1>Application Status Tracker</h1>
+      <p class="subtitle">Enter your tracking number to check the status of your application</p>
+    </header>
+
+    <main class="main-content">
+      <div class="search-card">
+        <label for="tracking-input" class="input-label">Tracking Number</label>
+        <div class="input-group">
+          <div class="input-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <input
+            type="text"
+            id="tracking-input"
+            placeholder="Enter your tracking number (e.g. APP-001)"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+          />
+        </div>
+        <button id="track-btn" class="track-btn">
+          <span class="btn-text">Track Status</span>
+          <svg class="btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state" class="state-card hidden">
+        <div class="spinner"></div>
+        <p class="loading-text">Searching...</p>
+      </div>
+
+      <!-- Error State -->
+      <div id="error-state" class="state-card error-state hidden">
+        <div class="state-icon error-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <p id="error-message" class="state-message"></p>
+      </div>
+
+      <!-- Not Found State -->
+      <div id="notfound-state" class="state-card notfound-state hidden">
+        <div class="state-icon notfound-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
+        </div>
+        <p class="state-message">No record found. Please check your tracking number.</p>
+        <p class="state-hint">Make sure you entered the correct tracking number and try again.</p>
+      </div>
+
+      <!-- Result Card -->
+      <div id="result-card" class="result-card hidden">
+        <div class="result-header">
+          <div>
+            <p class="result-label">Tracking Number</p>
+            <p id="res-tracking" class="result-tracking"></p>
+          </div>
+          <span id="res-status-badge" class="status-badge"></span>
+        </div>
+        <div class="result-divider"></div>
+        <div class="result-grid">
+          <div class="result-field">
+            <p class="field-label">Full Name</p>
+            <p id="res-name" class="field-value"></p>
+          </div>
+          <div class="result-field">
+            <p class="field-label">Request Type</p>
+            <p id="res-type" class="field-value"></p>
+          </div>
+          <div class="result-field full-width">
+            <p class="field-label">Date Submitted</p>
+            <p id="res-date-submitted" class="field-value"></p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p>Powered by Application Tracking System</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
