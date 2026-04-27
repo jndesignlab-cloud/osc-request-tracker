@@ -1,141 +1,312 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OSC Request Tracker</title>
+/* Import Inter Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  <div class="container">
+:root {
+  --brand-green: #406f27;
+  --brand-green-hover: #365e21;
+  --brand-green-light: #eaf3e3;
+  --brand-blue: #263f77;
+  --brand-blue-light: #e6ecf6;
+  --brand-black: #2A2A2A;
 
-    <!-- LOGO + TITLE -->
-    <div class="header">
-      <img src="logo.svg" alt="Logo" class="logo">
-      <h1>OSC Request Tracker</h1>
-      <p>Track your request status</p>
-    </div>
+  --color-bg: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-border: #e4e8ed;
+  --color-text-secondary: #5a5a5a;
+  --color-text-muted: #8a8f96;
 
-    <!-- SEARCH -->
-    <div class="search-box">
-      <input type="text" id="tracking-input" placeholder="Enter Tracking Number">
-      <button id="track-btn">Track Status</button>
-    </div>
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
 
-    <!-- STATES -->
-    <div id="loading-state" class="hidden">Searching...</div>
+  --shadow-lg: 0 14px 40px rgba(0,0,0,.10), 0 6px 16px rgba(0,0,0,.06);
+}
 
-    <div id="error-state" class="hidden">
-      <p id="error-message"></p>
-    </div>
+/* Base */
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: linear-gradient(180deg, #ffffff 0%, var(--color-bg) 100%);
+  color: var(--brand-black);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
+}
 
-    <div id="notfound-state" class="hidden"></div>
+/* Layout */
+.container {
+  width: 100%;
+  max-width: 560px;
+}
 
-    <!-- RESULT CARD -->
-    <div id="result-card" class="card hidden">
+/* Header (Top App Title) */
+.header {
+  text-align: center;
+  margin-bottom: 26px;
+}
 
-      <!-- HEADER -->
-      <div class="card-header">
-        <div>
-          <span class="label">Tracking Number</span>
-          <h2 id="res-tracking">—</h2>
-        </div>
+.logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 14px;
+}
 
-        <strong id="res-status-badge" class="status-badge">—</strong>
-      </div>
+.header h1 {
+  font-size: 2rem;
+  line-height: 1.15;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
 
-      <!-- REQUEST DETAILS -->
-      <div class="section">
-        <div class="section-title">Request Details</div>
+.header p {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
 
-        <div class="row">
-          <span>Full Name</span>
-          <strong id="res-name">—</strong>
-        </div>
+/* Search */
+.search-box {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
-        <div class="row">
-          <span>Request Type</span>
-          <strong id="res-type">—</strong>
-        </div>
+#tracking-input {
+  flex: 1;
+  padding: 13px 14px;
+  font-size: 0.95rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  background: #f9fafb;
+}
 
-        <div class="row highlight">
-          <span>Project Title</span>
-          <strong id="res-title">—</strong>
-        </div>
-      </div>
+#tracking-input:focus {
+  border-color: var(--brand-green);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(64, 111, 39, 0.15);
+}
 
-      <!-- ASSIGNMENT -->
-      <div class="section">
-        <div class="section-title">Assignment</div>
+#track-btn {
+  padding: 13px 18px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--brand-green);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
 
-        <div class="row">
-          <span>Person in Charge</span>
-          <strong id="res-assigned" class="chip">—</strong>
-        </div>
-      </div>
+#track-btn:hover {
+  background: var(--brand-green-hover);
+}
 
-      <!-- PROGRESS -->
-      <div class="section">
-        <div class="section-title">Progress</div>
+/* States */
+#loading-state,
+#error-state,
+#notfound-state {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
 
-        <div class="timeline" id="status-timeline">
+#error-state { color: #c53030; }
+#notfound-state { color: #c2580c; }
 
-          <div class="timeline-step" data-step="open">
-            <span></span>
-            <p>Open</p>
-          </div>
+/* Main Card */
+.card {
+  background: transparent;
+  padding: 0;
+}
 
-          <div class="timeline-step" data-step="ongoing">
-            <span></span>
-            <p>Ongoing</p>
-          </div>
+/* 🔥 Header Card FIXED ALIGNMENT */
+.card-header {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 18px;
 
-          <div class="timeline-step" data-step="reviewing">
-            <span></span>
-            <p>Reviewing</p>
-          </div>
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* ✅ FIX */
 
-          <div class="timeline-step" data-step="completed">
-            <span></span>
-            <p>Completed</p>
-          </div>
+  margin-bottom: 16px;
+}
 
-        </div>
-      </div>
+.card-header h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+}
 
-      <!-- DATES -->
-      <div class="section">
-        <div class="section-title">Timeline</div>
+.label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
 
-        <div class="row">
-          <span>Date Submitted</span>
-          <strong id="res-date-submitted">—</strong>
-        </div>
+/* Section Cards */
+.section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
 
-        <div class="row">
-          <span>Date Needed</span>
-          <strong id="res-date-needed">—</strong>
-        </div>
-      </div>
+.section + .section {
+  margin-top: 16px;
+}
 
-      <!-- QUEUE -->
-      <div class="section">
-        <div class="section-title">Queue</div>
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--brand-blue);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
 
-        <div class="row">
-          <span>Position</span>
-          <strong id="res-queue">—</strong>
-        </div>
-      </div>
+/* Rows */
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e7ebf0;
+}
 
-    </div>
+.row:last-child {
+  border-bottom: none;
+}
 
-  </div>
+.row span {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
 
-  <!-- IMPORTANT: script (2).js -->
-  <script src="script (2).js"></script>
+.row strong {
+  font-size: 0.96rem;
+  font-weight: 800;
+  text-align: right;
+  max-width: 65%;
+}
 
-</body>
-</html>
+/* Remove Project Title card look */
+.row.highlight {
+  background: transparent;
+  border: none;
+  padding: 12px 0;
+}
+
+#res-title {
+  color: var(--brand-blue);
+  line-height: 1.4;
+}
+
+/* Assigned Chip */
+#res-assigned {
+  background: #eef2ff;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+/* Queue */
+#res-queue {
+  color: var(--brand-blue);
+  font-weight: 800;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+/* Status Colors */
+.status-open { background: #e5e7eb; color: #374151; }
+.status-ongoing { background: #fef3c7; color: #92400e; }
+.status-reviewing { background: #dbeafe; color: #1d4ed8; }
+.status-hold { background: #fee2e2; color: #b91c1c; }
+.status-completed { background: #d1fae5; color: #065f46; }
+.status-rejected { background: #b91c1c; color: #ffffff; }
+
+/* Timeline */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 10px;
+}
+
+.timeline-step {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.timeline-step span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #d1d5db;
+  display: block;
+  margin: 0 auto 6px;
+}
+
+.timeline-step.active span {
+  background: var(--brand-green);
+}
+
+.timeline-step.current span {
+  box-shadow: 0 0 0 4px rgba(64, 111, 39, 0.2);
+}
+
+.timeline-step.blocked span {
+  background: #ef4444;
+}
+
+/* Utility */
+.hidden {
+  display: none !important;
+}
+
+/* Mobile */
+@media (max-width: 520px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .row strong {
+    text-align: left;
+    max-width: 100%;
+  }
+}
