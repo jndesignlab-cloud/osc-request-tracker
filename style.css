@@ -1,4 +1,4 @@
-/* ─── Reset & Base ─────────────────────────────────── */
+/* Reset */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -10,123 +10,256 @@
   --brand-green-hover: #365e21;
   --brand-green-light: #eaf3e3;
   --brand-blue: #263f77;
-  --brand-blue-hover: #1e3360;
   --brand-blue-light: #e6ecf6;
   --brand-black: #2A2A2A;
 
   --color-bg: #f5f7fa;
   --color-surface: #ffffff;
   --color-border: #e4e8ed;
-  --color-text-primary: var(--brand-black);
   --color-text-secondary: #5a5a5a;
   --color-text-muted: #8a8f96;
 
-  --status-submitted-bg: #f1f5f9;
-  --status-submitted-text: #475569;
-  --status-review-bg: var(--brand-blue-light);
-  --status-review-text: var(--brand-blue);
-  --status-processing-bg: #fff3e6;
-  --status-processing-text: #c2580c;
-  --status-approved-bg: var(--brand-green-light);
-  --status-approved-text: var(--brand-green);
-  --status-rejected-bg: #fdecec;
-  --status-rejected-text: #c53030;
-  --status-completed-bg: #d8e7cd;
-  --status-completed-text: #1f3d12;
-
   --radius-sm: 8px;
-  --radius-md: 12px;
   --radius-lg: 16px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-  --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.05);
   --shadow-lg: 0 8px 32px rgba(0,0,0,.10), 0 4px 12px rgba(0,0,0,.06);
 }
 
-/* ─── Layout ─────────────────────────────────────── */
+/* Base */
 body {
   font-family: 'Poppins', Arial, sans-serif;
   background: var(--color-bg);
-  color: var(--color-text-primary);
+  color: var(--brand-black);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
 }
 
-.main-content {
+/* Layout */
+.container {
+  width: 100%;
   max-width: 520px;
-  margin: auto;
-  padding: 20px;
 }
 
-/* ─── Header ─────────────────────────────────────── */
-.app-header {
+/* Header */
+.header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
-.app-header h1 {
-  font-size: 1.6rem;
-  font-weight: 700;
+.logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 14px;
 }
 
-/* ─── Result Card ────────────────────────────────── */
-.result-card {
+.header h1 {
+  font-size: 2rem;
+  line-height: 1.15;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.header p {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+/* Search */
+.search-box {
   background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+#tracking-input {
+  flex: 1;
+  width: 100%;
+  padding: 13px 14px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  background: #f9fafb;
+}
+
+#tracking-input:focus {
+  border-color: var(--brand-green);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(64, 111, 39, 0.15);
+}
+
+#track-btn {
+  padding: 13px 18px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--brand-green);
+  color: white;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#track-btn:hover {
+  background: var(--brand-green-hover);
+}
+
+/* States */
+#loading-state,
+#error-state,
+#notfound-state {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  margin-bottom: 18px;
+  color: var(--color-text-muted);
+}
+
+#error-state {
+  color: #c53030;
+}
+
+#notfound-state {
+  color: #c2580c;
+}
+
+/* Result Card */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-  overflow: hidden;
+  padding: 22px;
+  margin-bottom: 18px;
 }
 
-.result-header {
-  padding: 20px;
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
 }
 
-.result-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.row:last-child {
+  border-bottom: none;
 }
 
-/* ─── Fields ─────────────────────────────────────── */
-.result-field {
-  padding: 14px 20px;
-}
-
-.result-field.full-width {
-  grid-column: 1 / -1;
-}
-
-.field-label {
-  font-size: 0.7rem;
+.row span {
+  font-size: 0.78rem;
+  font-weight: 700;
   color: var(--color-text-muted);
   text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-.field-value {
-  font-size: 0.9rem;
-  font-weight: 500;
+.row strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--brand-black);
+  text-align: right;
+  max-width: 65%;
 }
 
-/* 🔥 NEW: Project Title Fix */
-.field-value.project-title {
+/* Project Title */
+#res-title {
   line-height: 1.4;
   word-break: break-word;
   white-space: normal;
-  font-weight: 600;
 }
 
-/* ─── Status Badge ───────────────────────────────── */
+/* Status Badge */
 .status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 6px 12px;
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
-.status-submitted    { background: var(--status-submitted-bg);  color: var(--status-submitted-text); }
-.status-under-review { background: var(--status-review-bg);     color: var(--status-review-text); }
-.status-processing   { background: var(--status-processing-bg); color: var(--status-processing-text); }
-.status-approved     { background: var(--status-approved-bg);   color: var(--status-approved-text); }
-.status-rejected     { background: var(--status-rejected-bg);   color: var(--status-rejected-text); }
-.status-completed    { background: var(--status-completed-bg);  color: var(--status-completed-text); }
+.status-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
 
-/* ─── Utility ────────────────────────────────────── */
+.status-submitted {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.status-under-review {
+  background: var(--brand-blue-light);
+  color: var(--brand-blue);
+}
+
+.status-processing {
+  background: #fff3e6;
+  color: #c2580c;
+}
+
+.status-approved {
+  background: var(--brand-green-light);
+  color: var(--brand-green);
+}
+
+.status-rejected {
+  background: #fdecec;
+  color: #c53030;
+}
+
+.status-completed {
+  background: #d8e7cd;
+  color: #1f3d12;
+}
+
+/* Utility */
 .hidden {
-  display: none;
+  display: none !important;
+}
+
+/* Mobile */
+@media (max-width: 520px) {
+  body {
+    padding: 28px 12px;
+  }
+
+  .search-box {
+    flex-direction: column;
+  }
+
+  #track-btn {
+    width: 100%;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .row strong {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .header h1 {
+    font-size: 1.6rem;
+  }
 }
