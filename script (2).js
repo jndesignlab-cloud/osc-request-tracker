@@ -9,12 +9,12 @@ const notfoundState = document.getElementById('notfound-state');
 let resultCard = document.getElementById('result-card');
 
 const STATUS_CLASS_MAP = {
-  'submitted':    'status-submitted',
+  'submitted': 'status-submitted',
   'under review': 'status-under-review',
-  'processing':   'status-processing',
-  'approved':     'status-approved',
-  'rejected':     'status-rejected',
-  'completed':    'status-completed',
+  'processing': 'status-processing',
+  'approved': 'status-approved',
+  'rejected': 'status-rejected',
+  'completed': 'status-completed',
 };
 
 function hideAll() {
@@ -35,8 +35,9 @@ function showError(msg) {
   errorState.classList.remove('hidden');
 }
 
-function showNotFound() {
+function showNotFound(msg) {
   hideAll();
+  notfoundState.textContent = msg || 'No record found. Please check your tracking number.';
   notfoundState.classList.remove('hidden');
 }
 
@@ -50,6 +51,7 @@ function showResult(data) {
   document.getElementById('res-tracking').textContent = data.tracking || '—';
   document.getElementById('res-name').textContent = data.name || '—';
   document.getElementById('res-type').textContent = data.type || '—';
+  document.getElementById('res-title').textContent = data.title || '—';
   document.getElementById('res-date-submitted').textContent = data.date_submitted || '—';
 
   const badge = document.getElementById('res-status-badge');
@@ -76,7 +78,9 @@ async function trackApplication() {
   showLoading();
 
   try {
-    const response = await fetch(`${API_URL}?tracking=${encodeURIComponent(trackingNumber)}`, { method: 'GET' });
+    const response = await fetch(`${API_URL}?tracking=${encodeURIComponent(trackingNumber)}`, {
+      method: 'GET'
+    });
 
     if (!response.ok) {
       throw new Error(`Server responded with status ${response.status}`);
@@ -87,7 +91,7 @@ async function trackApplication() {
     if (json && json.found === true && json.data) {
       showResult(json.data);
     } else {
-      showNotFound();
+      showNotFound(json.message);
     }
   } catch (err) {
     showError('Something went wrong. Please try again.');
