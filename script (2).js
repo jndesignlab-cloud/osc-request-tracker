@@ -6,16 +6,18 @@ const loadingState = document.getElementById('loading-state');
 const errorState = document.getElementById('error-state');
 const errorMessage = document.getElementById('error-message');
 const notfoundState = document.getElementById('notfound-state');
-let resultCard = document.getElementById('result-card');
+const resultCard = document.getElementById('result-card');
 
 const STATUS_CLASS_MAP = {
-  'submitted': 'status-submitted',
-  'under review': 'status-under-review',
-  'processing': 'status-processing',
-  'approved': 'status-approved',
-  'rejected': 'status-rejected',
+  'open': 'status-open',
+  'ongoing': 'status-ongoing',
+  'reviewing': 'status-reviewing',
+  'hold': 'status-hold',
   'completed': 'status-completed',
+  'declined/rejected': 'status-rejected',
 };
+
+/* ─── Helpers ───────────────────────────────────── */
 
 function hideAll() {
   loadingState.classList.add('hidden');
@@ -41,29 +43,48 @@ function showNotFound(msg) {
   notfoundState.classList.remove('hidden');
 }
 
+/* 🔥 SMART STATUS DETECTOR */
 function getStatusClass(status) {
-  return STATUS_CLASS_MAP[(status || '').toLowerCase().trim()] || 'status-submitted';
+  const s = (status || '').toLowerCase().trim();
+
+  if (s.includes('declined') || s.includes('rejected')) return 'status-rejected';
+  if (s.includes('review')) return 'status-reviewing';
+  if (s.includes('ongoing')) return 'status-ongoing';
+  if (s.includes('hold')) return 'status-hold';
+  if (s.includes('complete')) return 'status-completed';
+  if (s.includes('open')) return 'status-open';
+
+  return 'status-open';
 }
+
+/* Safe setter (prevents crashes) */
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value || '—';
+}
+
+/* ─── Display Result ────────────────────────────── */
 
 function showResult(data) {
   hideAll();
 
-  document.getElementById('res-tracking').textContent = data.tracking || '—';
-  document.getElementById('res-name').textContent = data.name || '—';
-  document.getElementById('res-type').textContent = data.type || '—';
-  document.getElementById('res-title').textContent = data.title || '—';
-  document.getElementById('res-assigned').textContent = data.assigned || '—';
-  document.getElementById('res-date-submitted').textContent = data.date_submitted || '—';
+  setText('res-tracking', data.tracking);
+  setText('res-name', data.name);
+  setText('res-type', data.type);
+  setText('res-title', data.title);
+  setText('res-assigned', data.assigned);
+  setText('res-date-submitted', data.date_submitted);
 
   const badge = document.getElementById('res-status-badge');
-  badge.textContent = data.status || 'Unknown';
-  badge.className = 'status-badge ' + getStatusClass(data.status);
+  if (badge) {
+    badge.textContent = data.status || 'Unknown';
+    badge.className = 'status-badge ' + getStatusClass(data.status);
+  }
 
-  const clone = resultCard.cloneNode(true);
-  resultCard.parentNode.replaceChild(clone, resultCard);
-  resultCard = clone;
   resultCard.classList.remove('hidden');
 }
+
+/* ─── Main Tracker Function ─────────────────────── */
 
 async function trackApplication() {
   const trackingNumber = trackingInput.value.trim();
@@ -71,7 +92,9 @@ async function trackApplication() {
   if (!trackingNumber) {
     trackingInput.focus();
     trackingInput.style.borderColor = '#dc2626';
-    setTimeout(() => { trackingInput.style.borderColor = ''; }, 1200);
+    setTimeout(() => {
+      trackingInput.style.borderColor = '';
+    }, 1200);
     return;
   }
 
@@ -79,21 +102,21 @@ async function trackApplication() {
   showLoading();
 
   try {
-    const response = await fetch(`${API_URL}?tracking=${encodeURIComponent(trackingNumber)}`, {
-      method: 'GET'
-    });
+    const response = await fetch(`${API_URL}?tracking=${encodeURIComponent(trackingNumber)}`);
 
     if (!response.ok) {
       throw new Error(`Server responded with status ${response.status}`);
     }
 
     const json = await response.json();
+    console.log("API RESPONSE:", json); // Debug (you can remove later)
 
     if (json && json.found === true && json.data) {
       showResult(json.data);
     } else {
       showNotFound(json.message);
     }
+
   } catch (err) {
     showError('Something went wrong. Please try again.');
     console.error('[Tracker] Fetch error:', err);
@@ -101,6 +124,8 @@ async function trackApplication() {
     trackBtn.disabled = false;
   }
 }
+
+/* ─── Events ───────────────────────────────────── */
 
 trackBtn.addEventListener('click', trackApplication);
 
