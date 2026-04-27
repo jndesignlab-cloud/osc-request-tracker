@@ -186,9 +186,10 @@ body {
 
 /* Assigned */
 #res-assigned {
-  line-height: 1.4;
-  word-break: break-word;
-  white-space: normal;
+  background: #eef2ff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
 }
 
 /* Status Badge */
