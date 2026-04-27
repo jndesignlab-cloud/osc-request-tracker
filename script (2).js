@@ -17,8 +17,6 @@ const STATUS_CLASS_MAP = {
   'declined/rejected': 'status-rejected',
 };
 
-/* ─── Helpers ───────────────────────────────────── */
-
 function hideAll() {
   loadingState.classList.add('hidden');
   errorState.classList.add('hidden');
@@ -43,7 +41,6 @@ function showNotFound(msg) {
   notfoundState.classList.remove('hidden');
 }
 
-/* 🔥 SMART STATUS DETECTOR */
 function getStatusClass(status) {
   const s = (status || '').toLowerCase().trim();
 
@@ -57,13 +54,34 @@ function getStatusClass(status) {
   return 'status-open';
 }
 
-/* Safe setter (prevents crashes) */
+function updateTimeline(status) {
+  const s = (status || '').toLowerCase().trim();
+  const steps = ['open', 'ongoing', 'reviewing', 'completed'];
+
+  let currentIndex = -1;
+
+  if (s.includes('open')) currentIndex = 0;
+  if (s.includes('ongoing')) currentIndex = 1;
+  if (s.includes('review')) currentIndex = 2;
+  if (s.includes('complete')) currentIndex = 3;
+
+  document.querySelectorAll('.timeline-step').forEach((step, index) => {
+    step.classList.remove('active', 'current', 'blocked');
+
+    if (s.includes('hold') || s.includes('declined') || s.includes('rejected')) {
+      step.classList.add('blocked');
+      return;
+    }
+
+    if (index <= currentIndex) step.classList.add('active');
+    if (index === currentIndex) step.classList.add('current');
+  });
+}
+
 function setText(id, value) {
   const el = document.getElementById(id);
   if (el) el.textContent = value || '—';
 }
-
-/* ─── Display Result ────────────────────────────── */
 
 function showResult(data) {
   hideAll();
@@ -81,10 +99,10 @@ function showResult(data) {
     badge.className = 'status-badge ' + getStatusClass(data.status);
   }
 
+  updateTimeline(data.status);
+
   resultCard.classList.remove('hidden');
 }
-
-/* ─── Main Tracker Function ─────────────────────── */
 
 async function trackApplication() {
   const trackingNumber = trackingInput.value.trim();
@@ -109,7 +127,6 @@ async function trackApplication() {
     }
 
     const json = await response.json();
-    console.log("API RESPONSE:", json); // Debug (you can remove later)
 
     if (json && json.found === true && json.data) {
       showResult(json.data);
@@ -124,8 +141,6 @@ async function trackApplication() {
     trackBtn.disabled = false;
   }
 }
-
-/* ─── Events ───────────────────────────────────── */
 
 trackBtn.addEventListener('click', trackApplication);
 
