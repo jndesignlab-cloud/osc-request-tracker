@@ -86,18 +86,18 @@ function formatQueue(position, total) {
   if (!position || !total) return '—';
 
   if (position === 1) {
-    return `1st in line (${total} open request${total === 1 ? '' : 's'})`;
+    return `1st in line (${total} request${total === 1 ? '' : 's'})`;
   }
 
   if (position === 2) {
-    return `2nd in line (${total} open requests)`;
+    return `2nd in line (${total} requests)`;
   }
 
   if (position === 3) {
-    return `3rd in line (${total} open requests)`;
+    return `3rd in line (${total} requests)`;
   }
 
-  return `${position}th in line (${total} open requests)`;
+  return `${position}th in line (${total} requests)`;
 }
 
 function showResult(data) {
