@@ -210,7 +210,7 @@ body {
   background: currentColor;
 }
 
-/* NEW STATUS SYSTEM */
+/* Status Colors */
 .status-open {
   background: #e5e7eb;
   color: #374151;
@@ -239,6 +239,67 @@ body {
 .status-rejected {
   background: #b91c1c;
   color: #ffffff;
+}
+
+/* Status Timeline */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.timeline-step {
+  position: relative;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.timeline-step span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #d1d5db;
+  display: block;
+  margin: 0 auto 6px;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #d1d5db;
+  z-index: 1;
+}
+
+.timeline-step.active {
+  color: var(--brand-green);
+}
+
+.timeline-step.active span,
+.timeline-step.active:not(:last-child)::after {
+  background: var(--brand-green);
+}
+
+.timeline-step.current span {
+  box-shadow: 0 0 0 4px rgba(64, 111, 39, 0.16);
+}
+
+.timeline-step.blocked {
+  color: #b91c1c;
+}
+
+.timeline-step.blocked span,
+.timeline-step.blocked:not(:last-child)::after {
+  background: #ef4444;
 }
 
 /* Utility */
@@ -272,5 +333,13 @@ body {
 
   .header h1 {
     font-size: 1.6rem;
+  }
+
+  .timeline {
+    gap: 4px;
+  }
+
+  .timeline-step {
+    font-size: 0.65rem;
   }
 }
