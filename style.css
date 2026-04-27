@@ -46,7 +46,7 @@ body {
   max-width: 560px;
 }
 
-/* Header (Top App Title) */
+/* Header */
 .header {
   text-align: center;
   margin-bottom: 26px;
@@ -139,17 +139,15 @@ body {
   padding: 0;
 }
 
-/* 🔥 Header Card FIXED ALIGNMENT */
+/* Header Card */
 .card-header {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 18px;
-
   display: flex;
   justify-content: space-between;
-  align-items: center; /* ✅ FIX */
-
+  align-items: center;
   margin-bottom: 16px;
 }
 
@@ -240,9 +238,18 @@ body {
 .status-badge {
   display: inline-flex;
   align-items: center;
+  gap: 7px;
   padding: 6px 12px;
   border-radius: 999px;
   font-weight: 700;
+}
+
+.status-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
 }
 
 /* Status Colors */
@@ -261,8 +268,10 @@ body {
 }
 
 .timeline-step {
+  position: relative;
   text-align: center;
   font-size: 0.72rem;
+  font-weight: 700;
   color: var(--color-text-muted);
 }
 
@@ -273,9 +282,30 @@ body {
   background: #d1d5db;
   display: block;
   margin: 0 auto 6px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
 }
 
-.timeline-step.active span {
+/* Connector line */
+.timeline-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #d1d5db;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.timeline-step.active {
+  color: var(--brand-green);
+}
+
+.timeline-step.active span,
+.timeline-step.active:not(:last-child)::after {
   background: var(--brand-green);
 }
 
@@ -283,7 +313,12 @@ body {
   box-shadow: 0 0 0 4px rgba(64, 111, 39, 0.2);
 }
 
-.timeline-step.blocked span {
+.timeline-step.blocked {
+  color: #b91c1c;
+}
+
+.timeline-step.blocked span,
+.timeline-step.blocked:not(:last-child)::after {
   background: #ef4444;
 }
 
@@ -308,5 +343,9 @@ body {
   .row strong {
     text-align: left;
     max-width: 100%;
+  }
+
+  .timeline-step {
+    font-size: 0.65rem;
   }
 }
