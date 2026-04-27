@@ -56,7 +56,6 @@ function getStatusClass(status) {
 
 function updateTimeline(status) {
   const s = (status || '').toLowerCase().trim();
-  const steps = ['open', 'ongoing', 'reviewing', 'completed'];
 
   let currentIndex = -1;
 
@@ -83,6 +82,24 @@ function setText(id, value) {
   if (el) el.textContent = value || '—';
 }
 
+function formatQueue(position, total) {
+  if (!position || !total) return '—';
+
+  if (position === 1) {
+    return `1st in line (${total} open request${total === 1 ? '' : 's'})`;
+  }
+
+  if (position === 2) {
+    return `2nd in line (${total} open requests)`;
+  }
+
+  if (position === 3) {
+    return `3rd in line (${total} open requests)`;
+  }
+
+  return `${position}th in line (${total} open requests)`;
+}
+
 function showResult(data) {
   hideAll();
 
@@ -92,6 +109,10 @@ function showResult(data) {
   setText('res-title', data.title);
   setText('res-assigned', data.assigned);
   setText('res-date-submitted', data.date_submitted);
+  setText('res-date-needed', data.date_needed);
+
+  const queueText = formatQueue(data.queue_position, data.total_open);
+  setText('res-queue', queueText);
 
   const badge = document.getElementById('res-status-badge');
   if (badge) {
