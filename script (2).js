@@ -52,6 +52,7 @@ function showResult(data) {
   document.getElementById('res-name').textContent = data.name || '—';
   document.getElementById('res-type').textContent = data.type || '—';
   document.getElementById('res-title').textContent = data.title || '—';
+  document.getElementById('res-assigned').textContent = data.assigned || '—';
   document.getElementById('res-date-submitted').textContent = data.date_submitted || '—';
 
   const badge = document.getElementById('res-status-badge');
