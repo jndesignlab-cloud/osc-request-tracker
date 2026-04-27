@@ -1,3 +1,6 @@
+/* Import Inter Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
 /* Reset */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -26,7 +29,7 @@
 
 /* Base */
 body {
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
   background: var(--color-bg);
   color: var(--brand-black);
   min-height: 100vh;
@@ -174,8 +177,15 @@ body {
   max-width: 65%;
 }
 
-/* Project Title */
+/* Project Title (Long Text Support) */
 #res-title {
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* NEW: Assigned / Person in Charge */
+#res-assigned {
   line-height: 1.4;
   word-break: break-word;
   white-space: normal;
