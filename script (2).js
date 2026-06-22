@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbwYs_RElgmZMEkWy937G0kooextR3M3P4MOUHhnoN2Zn6sLmyi3OhgPJbTJ__NDhc7Nzg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzIRZyFxAgEkbNFlrVmeRgKyohYNTpHNrzgv8qFWRZIdmF72I4OXAxHVs_1auJgOftV/exec";
 
 const trackingInput = document.getElementById('tracking-input');
 const trackBtn = document.getElementById('track-btn');
